@@ -1,0 +1,27 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikiyas6/Forkify.git"
+  },
+  "author": "Mikiyas Teowodroes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mikiyas6/Forkify/issues"
+  },
+  "homepage": "https://github.com/Mikiyas6/Forkify#readme",
+  "dependencies": {
+    "core-js": "^3.38.1",
+    "parcel": "^2.12.0",
+    "regenerator-runtime": "^0.14.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.12.0"
+  }
+}
