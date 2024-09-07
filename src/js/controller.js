@@ -4,7 +4,8 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
-import { START_PAGE } from './config.js';
+import addRecipeView from './views/addRecipeView.js';
+import { START_PAGE, MODAL_CLOSE_SEC } from './config.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -85,6 +86,30 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    // Show loading spinner
+    addRecipeView.renderSpinner();
+    // Upload the new recipe data
+    await model.uploadRecipe(newRecipe);
+    // Render recipe
+    recipeView.render(model.state.recipe);
+    // Success Message
+    addRecipeView.renderMessage();
+    // Render Bookmark View
+    bookmarksView.render(model.state.bookmarks);
+    // Change ID in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    // window.history.back()
+    // Close form window
+    setTimeout(function () {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    addRecipeView.renderError(err.message);
+  }
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -92,61 +117,6 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
-
-// ########################################
-
-// const input = document.querySelector('.search__field');
-// const searchButton = document.querySelector('.search__btn');
-// const results = document.querySelector('.results');
-
-// const renderSpinner = function () {
-//   const markup = `<div class="spinner">
-//           <svg>
-//             <use href="../img/icons.svg#icon-loader"></use>
-//           </svg>
-//         </div>`;
-//   results.innerHTML = '';
-//   results.insertAdjacentHTML('afterbegin', markup);
-// };
-
-// const loadResults = async function (query) {
-//   try {
-//     renderSpinner();
-//     const res = await fetch(
-//       `https://forkify-api.herokuapp.com/api/v2/recipes?search=${query}`
-//     );
-//     const data = await res.json();
-//     const { recipes } = data.data;
-//     if (!res.ok) {
-//       throw new Error(`There's an error ${data.status}`);
-//     }
-
-//     recipes.forEach(recipe => {
-//       console.log(recipe);
-//       let markup = ` <li class="preview">
-//             <a class="preview__link" href="#${recipe.id}">
-//               <figure class="preview__fig">
-//                 <img src="${recipe.image_url}" alt="Test" />
-//               </figure>
-//               <div class="preview__data">
-//                 <h4 class="preview__title">${recipe.title}</h4>
-//                 <p class="preview__publisher">${recipe.publisher}</p>
-//               </div>
-//             </a>
-//           </li>`;
-//       results.insertAdjacentHTML('afterBegin', markup);
-//     });
-//   } catch (err) {
-//     alert(err.message);
-//   }
-// };
-// searchButton.addEventListener('click', function (event) {
-//   event.preventDefault();
-//   const query = input.value;
-//   if (!query) return;
-//   loadResults(query);
-// });
-// ['hashchange', 'load'].forEach(e => window.addEventListener(e, controlRecipes));
-// #########################################
