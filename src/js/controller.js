@@ -39,15 +39,15 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
+    // 0) Display the spinner
     resultsView.renderSpinner();
     // 1) Get search query
     const query = searchView.getQuery();
     if (!query) return;
-    // 2) Load search result
+    // 2) Load search result: find all the recipes with the query keyword and put them in the state
     await model.loadSearchResults(query);
     // 3) Render result
     resultsView.render(model.getSearchResultsPage(START_PAGE));
-
     // 4) Render Initial Pagination buttons
     paginationView.render(model.state.search);
   } catch (err) {

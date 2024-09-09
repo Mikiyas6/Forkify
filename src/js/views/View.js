@@ -1,6 +1,8 @@
+// view.js
 import icons from 'url:../../img/icons.svg';
+// It provides essential methods and properties that are shared across different views
 export default class View {
-  _data;
+  _data; //Stores the data that will be used to generate the markup for the view
 
   render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -15,7 +17,6 @@ export default class View {
   update(data) {
     this._data = data;
     const newMarkup = this._generateMarkup();
-
     const newDOM = document.createRange().createContextualFragment(newMarkup);
     const newElements = Array.from(newDOM.querySelectorAll('*'));
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
@@ -26,7 +27,7 @@ export default class View {
         !newEl.isEqualNode(curEl) &&
         newEl.firstChild?.nodeValue.trim() !== ''
       ) {
-        curEl.textContent = newEl.textContent;
+        if (curEl) curEl.textContent = newEl.textContent;
       }
       if (!newEl.isEqualNode(curEl)) {
         Array.from(newEl.attributes).forEach(attr =>
