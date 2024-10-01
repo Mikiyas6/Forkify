@@ -124,10 +124,6 @@ The project uses the Forkify API to fetch recipe data. You can find more details
   - `GET /:id`: Get detailed information about a recipe by its ID.
   - `POST /`: Add a new recipe.
 
-## **License**
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
 ## **Acknowledgments**
 
 - This project was inspired by the "JavaScript: The Complete Guide 2023" course by Jonas Schmedtmann.
